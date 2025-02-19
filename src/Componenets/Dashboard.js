@@ -21,7 +21,8 @@ const Dashboard=(props)=> {
   document.title = `${capFirstLetter(props.category)} - Attendance Management System`;
 
   useEffect(() => {
-    myAxios.get('/dashboard/user-details')
+    
+    myAxios.get(`${process.env.REACT_APP_API_URL}/dashboard/user-details`)
       .then(response => {
         if (response.data.loginTime) {
           const formattedDate1 = new Date(response.data.loginTime).toLocaleString('en-US', {
@@ -43,7 +44,7 @@ const Dashboard=(props)=> {
         setAddress(response.data.address || "");
         setPosition(response.data.position || "");
         setPreviewImage(response.data.profilePicture
-          ? `http://localhost:8080${response.data.profilePicture}`
+          ? `${process.env.REACT_APP_API_URL}${response.data.profilePicture}`
           : "/nodp.jpg");
 
 
@@ -76,7 +77,7 @@ const Dashboard=(props)=> {
     try {
 
       const token = localStorage.getItem("authToken");
-      const response = await myAxios.post("/profile/update", formData, {
+      const response = await myAxios.post(`${process.env.REACT_APP_API_URL}/profile/update`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`
@@ -104,7 +105,7 @@ const Dashboard=(props)=> {
 
   const handleMarkIn = async () => {
     try {
-      const response = await myAxios.post('/Attendance/markIn', {}); // Send an empty body
+      const response = await myAxios.post(`${process.env.REACT_APP_API_URL}/Attendance/markIn`, {}); // Send an empty body
       toast.success(response.data.message);
 
       // Ensure `loginTime` is stored as a string
@@ -124,7 +125,7 @@ const Dashboard=(props)=> {
 
   const handleMarkOut = async () => {
     try {
-      const response = await myAxios.post('/Attendance/markOut', {});
+      const response = await myAxios.post(`${process.env.REACT_APP_API_URL}/Attendance/markOut`, {});
 
       // Check if logoutTime and totalWorkingHours exist
       if (response.data.logoutTime || response.data.totalWorkingHours) {

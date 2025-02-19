@@ -3,7 +3,7 @@ import { myAxios } from "./helper";
 
 export const signUp =async (user)=>{
     const response = await myAxios
-        .post('/Employee/signup', user);
+        .post(`${process.env.REACT_APP_API_URL}/Employee/signup`, user);
     return response.data;
 
 };
@@ -18,7 +18,7 @@ export const login = (loginDetail) => {
         password: loginDetail.password
     };
 
-    return myAxios.post('/Employee/login', fixedLoginDetail)
+    return myAxios.post(`${process.env.REACT_APP_API_URL}/Employee/login`, fixedLoginDetail)
         .then((response) => {
             if (response.data.token) {  // Assuming the backend sends a JWT token
                 localStorage.setItem("authToken", response.data.token);
